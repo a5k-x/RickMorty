@@ -2,7 +2,7 @@ package com.learn.rickmorty.data.network
 
 import com.learn.rickmorty.data.model.Character
 import com.learn.rickmorty.data.model.DataModel
-import com.learn.rickmorty.data.model.Episide
+import com.learn.rickmorty.data.model.Episode
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -25,5 +25,5 @@ interface CharacterApi {
     @GET("episode/{id}")
     fun getEpisode(
         @Path("id") id: List<Int>
-    ): Call<List<Episide>>
+    ): Call<List<Episode>>
 }

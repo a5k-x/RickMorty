@@ -4,9 +4,9 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 
-open class DataModel(val results: List<Character>)
+class DataModel(val results: List<Character>)
 @Parcelize
-class Character(
+open class Character(
     private val id: Int,
     private val name: String,
     private val status: String,
@@ -49,10 +49,12 @@ class Origin(
 ) : Parcelable
 
 
-class Episide(
-    private val name: String,
-    private val air_date:String
+class Episode(
+    private val name: String ="",
+    private val air_date:String = "",
+    private val type_in:Int = 1
 ){
     fun getName() = name
     fun getData() = air_date
+    fun getType() = type_in
 }

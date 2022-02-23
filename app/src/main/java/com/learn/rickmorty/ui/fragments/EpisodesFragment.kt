@@ -7,11 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.learn.rickmorty.R
 import com.learn.rickmorty.data.AppState
 import com.learn.rickmorty.data.model.Character
 import com.learn.rickmorty.databinding.FragmentEpisodesBinding
+import com.learn.rickmorty.ui.adapters.MainAdapter
 import com.learn.rickmorty.viewModel.EpisodeViewModel
 
 
@@ -21,8 +24,9 @@ private const val ARG_PARAM1 = "param1"
 class EpisodesFragment : Fragment() {
 
     private var param1: Character? = null
-    private var vb:FragmentEpisodesBinding?=null
-    private val dataModel:EpisodeViewModel by lazy {
+    private var vb: FragmentEpisodesBinding? = null
+    private var adapterM: MainAdapter? = null
+    private val dataModel: EpisodeViewModel by lazy {
         EpisodeViewModel()
     }
 
@@ -39,7 +43,7 @@ class EpisodesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-    vb = FragmentEpisodesBinding.inflate(inflater,container,false)
+        vb = FragmentEpisodesBinding.inflate(inflater, container, false)
         return vb?.root
     }
 
@@ -50,20 +54,33 @@ class EpisodesFragment : Fragment() {
         val listEpiCode = mutableListOf<Int>()
 
         if (listEpisodes != null) {
-            for (i in listEpisodes.indices){
-                var st = listEpisodes[i].replace("https://rickandmortyapi.com/api/episode/","",true)
+            for (i in listEpisodes.indices) {
+                //не красиво
+                var st =
+                    listEpisodes[i].replace("https://rickandmortyapi.com/api/episode/", "", true)
                 listEpiCode.add(st.toInt())
             }
         }
-        Log.i("AAA","Открыли этизоды вот список ${listEpiCode.toString()}")
-        dataModel.getLiveData().observe(viewLifecycleOwner,{it -> render(it)})
+        dataModel.getLiveData().observe(viewLifecycleOwner, { it -> render(it) })
         dataModel.getEpisodes(listEpiCode)
+        vb?.recyclerContaiterEpisode.also {
+            it?.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+            adapterM = MainAdapter()
+            it?.adapter = adapterM
+        }
+
+
     }
+
     fun render(data: AppState) {
         when (data) {
-            is AppState.SuccessId -> {
-                Log.i("AAA", "Успех")
+            is AppState.SuccessIdEpi -> {
+                Log.i("AAA", "Успех ${data.dataList[5].getType()}")
+
+                adapterM?.initListEpisode(data.dataList)
+                adapterM?.notifyDataSetChanged()
             }
+
             is AppState.Loading -> {
                 Log.i("AAA", "Загрузка")
             }
@@ -72,10 +89,11 @@ class EpisodesFragment : Fragment() {
             }
         }
     }
+
     companion object {
 
         @JvmStatic
-        fun newInstance(param1: Character,) =
+        fun newInstance(param1: Character) =
             EpisodesFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_PARAM1, param1)

@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/name_episode"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
-</TextView>
+    <TextView
+        android:id="@+id/name_episode_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Название эпизода"
+        android:layout_margin="10dp"
+        android:textAppearance="?attr/textAppearanceHeadline6" />
+    <TextView
+        android:id="@+id/date_episode_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Дата выхода"
+        android:layout_marginLeft="20dp"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textColor="?android:attr/textColorSecondary" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

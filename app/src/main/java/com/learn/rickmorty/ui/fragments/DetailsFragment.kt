@@ -75,7 +75,6 @@ class DetailsFragment : Fragment() {
 
     //Открыть список эпизодов
     private fun openEpisodes(type: Character) {
-        Log.i("AAA", "Перейти к эпизодам")
         activity?.supportFragmentManager?.beginTransaction()
             ?.addToBackStack(null)
             ?.replace(R.id.fragment_container,EpisodesFragment.newInstance(type))
@@ -84,7 +83,6 @@ class DetailsFragment : Fragment() {
     }
 
     companion object {
-
         @JvmStatic
         fun newInstance(idCharacter: Int) =
             DetailsFragment().apply {

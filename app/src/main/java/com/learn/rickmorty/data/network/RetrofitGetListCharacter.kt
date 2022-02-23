@@ -2,7 +2,7 @@ package com.learn.rickmorty.data.network
 
 import com.learn.rickmorty.data.model.Character
 import com.learn.rickmorty.data.model.DataModel
-import com.learn.rickmorty.data.model.Episide
+import com.learn.rickmorty.data.model.Episode
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -22,7 +22,7 @@ class RetrofitGetListCharacter : DataSource<Call<DataModel>> {
     }
 
     //Эпизоды
-    override fun getListEpisodes(array: List<Int>): Call<List<Episide>> {
+    override fun getListEpisodes(array: List<Int>): Call<List<Episode>> {
         return getService().getEpisode(array)
     }
 
