@@ -17,6 +17,7 @@ class Character(
     private val url:String,
     private val created:String
     ){
+    fun getId() = id
     fun getUrlImage() = image
     fun getName() = name
 }

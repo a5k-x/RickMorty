@@ -1,5 +1,6 @@
 package com.learn.rickmorty.data.network
 
+import com.learn.rickmorty.data.model.Character
 import com.learn.rickmorty.data.model.RequestApi
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -10,10 +11,14 @@ class RetrofitGetListCharacter : DataSource<Call<RequestApi>> {
     private val baseUrl = "https://rickandmortyapi.com/api/"
 
     override fun getData(page: Int): Call<RequestApi> {
-        return getService(page).getListCharacter(page)
+        return getService().getListCharacter(page)
     }
 
-    private fun getService(page: Int): CharacterApi {
+    override fun getCharacter(id: Int): Call<Character> {
+        return getService().getCharacter(id)
+    }
+
+    private fun getService(): CharacterApi {
         return getListCharacter().create(CharacterApi::class.java)
     }
 
@@ -23,4 +28,6 @@ class RetrofitGetListCharacter : DataSource<Call<RequestApi>> {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
+
 }

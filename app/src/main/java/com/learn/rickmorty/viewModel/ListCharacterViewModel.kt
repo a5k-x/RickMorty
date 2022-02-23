@@ -25,13 +25,14 @@ class ListCharacterViewModel:ViewModel() {
     fun getLiveData():LiveData<AppState>{
         return liveData
     }
-
+//Запрос на получение списка персонажей
     fun getListCharacter(page:Int){
-        liveData.postValue(AppState.Loading(1))
+
         scope.launch {
         val  listCharacter = ListCharacterRepository(DataSourceRemote()).getListCharacter(page)
          withContext(Dispatchers.Main){
-            listCharacter.enqueue(object :
+             liveData.postValue(AppState.Loading(1))
+             listCharacter.enqueue(object :
                  Callback<RequestApi>{
                  override fun onResponse(call: Call<RequestApi>, response: Response<RequestApi>) {
                      Log.i("AAA", "Ответ от сервера: ${response.body()?.results?.size}")
