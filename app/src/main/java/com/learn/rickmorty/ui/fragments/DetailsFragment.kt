@@ -1,13 +1,18 @@
 package com.learn.rickmorty.ui.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import coil.load
+import com.learn.rickmorty.R
 import com.learn.rickmorty.data.AppState
+import com.learn.rickmorty.data.model.Character
 import com.learn.rickmorty.databinding.FragmentDetailsBinding
-import com.learn.rickmorty.viewModel.DatailViewModel
+import com.learn.rickmorty.viewModel.DetailViewModel
 
 
 private const val ARG_PARAM1 = "id"
@@ -16,8 +21,8 @@ class DetailsFragment : Fragment() {
 
     private var idCharacter: Int? = null
     private var vb: FragmentDetailsBinding? = null
-    private val dataModel: DatailViewModel by lazy {
-        DatailViewModel()
+    private val dataModel: DetailViewModel by lazy {
+        DetailViewModel()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +36,7 @@ class DetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        vb = FragmentDetailsBinding.inflate(layoutInflater)
+        vb = FragmentDetailsBinding.inflate(inflater,container,false)
         return vb?.root
     }
 
@@ -42,12 +47,40 @@ class DetailsFragment : Fragment() {
 
     }
 
+    @SuppressLint("ResourceType")
     fun render(data: AppState) {
         when (data) {
-            is AppState.Success -> {}
-            is AppState.Loading -> {}
-            is AppState.Error -> {}
+            is AppState.SuccessId -> {
+                vb?.imageCharacterCard?.load(data.dataList.getUrlImage())
+                vb?.nameCharacterCard?.text = data.dataList.getName()
+                val type = data.dataList
+                vb?.typeCharacterCard?.text = "Тип: " + type.getType() ?: "Неопределенно"
+                vb?.statusCharacterCard?.text = "Статус: " + type.getStatus() ?: "Неопределенно"
+                //Местоположения
+                var location = type.getLocation()
+                vb?.locationCharacterCard?.text =
+                    "Местоположение: " + location.getName() ?: "Неопределенно"
+                vb?.episodesCharacterCard?.setOnClickListener {
+                    openEpisodes(type)
+                }
+            }
+            is AppState.Loading -> {
+                Log.i("AAA", "Загрузка")
+            }
+            is AppState.Error -> {
+                Log.i("AAA", "Ошибка - ${data.error.message}")
+            }
         }
+    }
+
+    //Открыть список эпизодов
+    private fun openEpisodes(type: Character) {
+        Log.i("AAA", "Перейти к эпизодам")
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.addToBackStack(null)
+            ?.replace(R.id.fragment_container,EpisodesFragment.newInstance(type))
+            ?.commit()
+
     }
 
     companion object {

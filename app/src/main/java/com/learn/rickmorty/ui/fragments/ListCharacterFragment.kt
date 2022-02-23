@@ -56,7 +56,7 @@ class ListCharacterFragment : Fragment() {
     fun openDateilCharacterFragment(character: Character) {
         activity?.supportFragmentManager?.beginTransaction()
             ?.addToBackStack(null)
-            ?.add(R.id.fragment_container, DetailsFragment.newInstance(character.getId()))
+            ?.replace(R.id.fragment_container, DetailsFragment.newInstance(character.getId()))
             ?.commit()
     }
 
