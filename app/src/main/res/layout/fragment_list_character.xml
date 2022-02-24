@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Fone"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragments.ListCharacterFragment">
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
     <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/detail_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/dateil_container"/>
+        android:layout_height="match_parent" />
+
+    <ProgressBar
+        android:id="@+id/spinner_progress_bar"
+        android:layout_width="@dimen/progress_bar_size"
+        android:layout_height="@dimen/progress_bar_size"
+        android:layout_centerInParent="true"
+        android:indeterminateDrawable="@drawable/rotate_for_spinner"
+        android:indeterminateOnly="true"
+        android:visibility="gone" />
+
 </RelativeLayout>

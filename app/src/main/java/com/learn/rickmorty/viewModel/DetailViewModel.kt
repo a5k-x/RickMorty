@@ -9,6 +9,7 @@ import com.learn.rickmorty.data.network.DataSourceRemote
 import com.learn.rickmorty.data.repository.ListCharacterRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,15 +26,13 @@ class DetailViewModel : ViewModel() {
     }
 
     fun getRequestDatail(idCharacter: Int?) {
+        liveData.postValue(AppState.Loading(1))
         scope.launch {
             val data =
                 idCharacter?.let { ListCharacterRepository(DataSourceRemote()).getCharacter(it) }
             data?.enqueue(object : Callback<Character> {
                 override fun onResponse(call: Call<Character>, response: Response<Character>) {
-                    val data = response.body()
-                    if (response != null) {
-                        liveData.postValue(response.body()?.let { AppState.SuccessId(it) })
-                    }
+                    liveData.postValue(response.body()?.let { AppState.SuccessId(it) })
                 }
 
                 override fun onFailure(call: Call<Character>, t: Throwable) {
@@ -42,5 +41,7 @@ class DetailViewModel : ViewModel() {
             })
         }
     }
-
+    fun closeScope(){
+        scope.cancel()
+    }
 }

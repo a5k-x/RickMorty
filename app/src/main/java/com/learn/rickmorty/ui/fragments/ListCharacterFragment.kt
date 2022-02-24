@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +27,8 @@ class ListCharacterFragment : Fragment() {
     private val dataModel: ListCharacterViewModel by lazy {
         ListCharacterViewModel()
     }
+    lateinit var spinner: ProgressBar
+    private var textError: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,13 +50,19 @@ class ListCharacterFragment : Fragment() {
         }
         adapter1?.onClick(object : OnClickItem {
             override fun onClick(itemCharacter: Character) {
-                Log.i("AAA", "Имя персонажа ${itemCharacter.getName()}")
                 openDateilCharacterFragment(itemCharacter)
             }
         })
-        testScrol()
+        initVariable()
+        scrollCust()
     }
 
+    private fun initVariable() {
+        spinner = vb?.spinnerProgressBar!!
+        textError = resources.getString(R.string.textError)
+    }
+
+    //Открыть детализацию по персонажу
     fun openDateilCharacterFragment(character: Character) {
         activity?.supportFragmentManager?.beginTransaction()
             ?.addToBackStack(null)
@@ -60,49 +70,50 @@ class ListCharacterFragment : Fragment() {
             ?.commit()
     }
 
-    fun testScrol() {
-        vb?.recyclerContainer?.setOnScrollChangeListener(object : View.OnScrollChangeListener {
-            override fun onScrollChange(
-                v: View?,
-                scrollX: Int,
-                scrollY: Int,
-                oldScrollX: Int,
-                oldScrollY: Int
-            ) {
-                val view = (v as RecyclerView).layoutManager
-                //кол-во элементов в контейнере
-                var asd1 = view?.itemCount!!
-                //последний отображаемый элемент
-                var asd2 = (view as LinearLayoutManager).findFirstVisibleItemPosition()
-                //Временно для пагинации
-                if (asd1.minus(asd2) > 5) {
-                    isLoad = true
-                }
-                if (asd1.minus(asd2) <= 5 && isLoad) {
-                    newPage()
-                }
-                Log.i("AAA", "Скрол: page $page ")
+    private fun scrollCust() {
+        vb?.recyclerContainer?.setOnScrollChangeListener { v, _, _, _, _ ->
+            val view = (v as RecyclerView).layoutManager
+            //кол-во элементов в контейнере
+            val asd1 = view?.itemCount!!
+            //последний отображаемый элемент
+            val asd2 = (view as LinearLayoutManager).findLastVisibleItemPosition()
+            //Для пагинации
+            if (asd1.minus(asd2) > 5) {
+                isLoad = true
             }
-        })
+            if (asd1.minus(asd2) <= 5 && isLoad) {
+                newPage()
+            }
+            Log.i("AAA", "Скрол: page $page ")
+        }
     }
 
-    fun newPage() {
+    private fun newPage() {
         isLoad = false
         dataModel.getListCharacter(++page)
     }
 
-    fun render(data: AppState) {
+    //Обработка состояний
+    private fun render(data: AppState) {
         when (data) {
             is AppState.Success -> {
-                Log.i("AAA", "кол-во объектов${data.dataList.size}")
+                spinner.visibility = View.GONE
                 adapter1?.initList(data.dataList)
                 adapter1?.notifyDataSetChanged()
             }
-            is AppState.Loading ->
-                Log.i("AAA", "Загрузка")
-            is AppState.Error ->
+            is AppState.Loading -> spinner.visibility = View.VISIBLE
+            is AppState.Error -> {
+                spinner.visibility = View.GONE
+                Toast.makeText(requireContext(), textError, Toast.LENGTH_LONG)
+                    .show()
                 Log.i("AAA", "Ошибка - ${data.error.message}")
+            }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        dataModel.closeScope()
     }
 
     companion object {

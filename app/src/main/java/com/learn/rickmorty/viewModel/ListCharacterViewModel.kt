@@ -7,10 +7,7 @@ import com.learn.rickmorty.data.AppState
 import com.learn.rickmorty.data.model.DataModel
 import com.learn.rickmorty.data.network.DataSourceRemote
 import com.learn.rickmorty.data.repository.ListCharacterRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,7 +27,7 @@ class ListCharacterViewModel : ViewModel() {
 
         scope.launch {
             val listCharacter = ListCharacterRepository(DataSourceRemote()).getListCharacter(page)
-            withContext(Dispatchers.Main) {
+
                 liveData.postValue(AppState.Loading(1))
                 listCharacter.enqueue(object :
                     Callback<DataModel> {
@@ -43,8 +40,11 @@ class ListCharacterViewModel : ViewModel() {
                     }
 
                 })
-            }
+
         }
     }
 
+    fun closeScope(){
+        scope.cancel()
+    }
 }

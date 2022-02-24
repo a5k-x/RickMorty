@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="progress_bar_size">150dp</dimen>
+    <dimen name="image_character_card_widght">200dp</dimen>
+    <dimen name="detail_character_card_margin">16dp</dimen>
+    <dimen name="name_episode_margin">5dp</dimen>
+    <dimen name="date_episode_card_marginLeft">15dp</dimen>
+    <dimen name="name_episode_card_margin">10dp</dimen>
+    <dimen name="date_episode_card_margin_Top">6dp</dimen>
+    <dimen name="image_character_size">75dp</dimen>
+    <dimen name="image_character_size_margin">6dp</dimen>
+    <dimen name="item_charactel_Linear_margin">5dp</dimen>
+</resources>

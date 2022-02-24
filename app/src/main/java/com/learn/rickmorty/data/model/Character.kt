@@ -1,24 +1,23 @@
 package com.learn.rickmorty.data.model
 
 import android.os.Parcelable
+import android.util.Log
 import kotlinx.parcelize.Parcelize
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class DataModel(val results: List<Character>)
+
 @Parcelize
 open class Character(
     private val id: Int,
     private val name: String,
     private val status: String,
-    private val species: String,
     private val type: String,
-    private val gender: String,
-    private val origin: Origin,
     private val location: Location,
     private val image: String,
     private val episode: List<String>,
-    private val url: String,
-    private val created: String
 ) : Parcelable {
     fun getId() = id
     fun getUrlImage() = image
@@ -27,7 +26,7 @@ open class Character(
     fun getStatus() = status
     fun getLocation(): Location = location
     fun getEpisode(): List<String> = episode
-    fun getOrigin(): Origin = origin
+
 }
 
 //Имя и ссылка на последнюю известную конечную точку местоположения персонажа.
@@ -36,9 +35,9 @@ class Location(
     private val name: String,
     private val url: String,
 
-) : Parcelable {
-    fun getName()= name
-    fun getUrl()= url
+    ) : Parcelable {
+    fun getName() = name
+    fun getUrl() = url
 }
 
 //Имя и ссылка на место происхождения персонажа.
@@ -48,13 +47,20 @@ class Origin(
     private val url: String
 ) : Parcelable
 
-
 class Episode(
-    private val name: String ="",
-    private val air_date:String = "",
-    private val type_in:Int = 1
-){
+    private val name: String = "",
+    private val air_date: String = "",
+    private var dataNew: Date? = null
+
+) {
     fun getName() = name
     fun getData() = air_date
-    fun getType() = type_in
+    fun getDataNew() = dataNew
+
+    //из строки  объект дата, для сортировки
+    fun getDataNew(air_date: String) {
+        val simpData = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH)
+        dataNew = simpData.parse(air_date)
+
+    }
 }

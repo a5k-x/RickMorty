@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/name_episode"
+    style="@style/FoneItem"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/name_episode_margin"
+    android:layout_marginTop="@dimen/name_episode_margin"
+    android:layout_marginRight="@dimen/name_episode_margin"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/name_episode_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Название эпизода"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/name_episode_card_margin"
         android:textAppearance="?attr/textAppearanceHeadline6" />
+
     <TextView
         android:id="@+id/date_episode_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Дата выхода"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="@dimen/date_episode_card_marginLeft"
+        android:layout_marginTop="@dimen/date_episode_card_margin_Top"
         android:textAppearance="?attr/textAppearanceBody2"
         android:textColor="?android:attr/textColorSecondary" />
 

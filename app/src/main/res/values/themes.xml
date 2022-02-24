@@ -13,4 +13,12 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Fone" parent="Theme.RickMorty">
+        <item name="android:background">@drawable/fone</item>
+    </style>
+    <style name="FoneItem" parent="Theme.RickMorty">
+        <item name="android:background">@drawable/fone_item</item>
+    </style>
+
 </resources>
